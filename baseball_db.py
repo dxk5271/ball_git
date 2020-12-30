@@ -5,11 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from teams import *
 import pyodbc 
-conn = pyodbc.connect('Driver={SQL Server};'
-                      'Server=DESKTOP-F46GKKA;'
-                      'Database=Baseball_data;'
-                      'Trusted_Connection=yes;')
-cursor = conn.cursor()
+
 
 
 my_list = []
@@ -51,35 +47,31 @@ for j in range (30):
     # =============================================================================
  
 
-    ab = []
-    single = []
-    double = []
-    triple = []
-    homer = []
-    rbi = []
-    bb =[]
-    k = []
-    avg = []
-    obp = []
-    slg = []
-    ops = []
-    
-d
+
     
     
     o = 1
     it = 0 
-    
+    conn = pyodbc.connect('Driver={SQL Server};'
+                      'Server=DESKTOP-F46GKKA;'
+                      'Database=Baseball_data;'
+                      'Trusted_Connection=yes;')
+    cursor = conn.cursor()
     for x in range(200):
         it = it + 1
         p= 0 + o
         data = data.findNext('td')
-        data_print= data.get_text()
-        if data_print == 'Totals':
+        H = data.get_text()
+        
+        if H == 'Totals':
             break
         
-        print(data_print)
-        
+        print(H)
+        cursor.execute("INSERT INTO dbo.STATS$(H) VALUES (?)", (H))    
+        #Values = [H, AVG]
+        #cursor.execute(SQLCommand,Values)
+        conn.commit() 
+        print('committed')
         
         o = o+1
     i = i +1
