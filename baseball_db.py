@@ -64,7 +64,7 @@ for j in range (30):
     slg = []
     ops = []
     
-
+d
     
     
     o = 1
