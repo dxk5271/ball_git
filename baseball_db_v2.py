@@ -40,7 +40,10 @@ def web_scrape():
                Opponents_Name = data_print
                cursor.execute("SELECT * FROM dbo.Opponents$ WHERE Opponents_NAME = ?",Opponents_Name)
                x = cursor.fetchone()
-               if len(x) > 0 
+               try:
+                   length = len(x)
+               except:
+                   pass
                 
                 
             
