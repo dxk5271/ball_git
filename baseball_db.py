@@ -26,32 +26,32 @@ def web_scrape():
           
         o = 1
         loopy = 0 
-        conn = pyodbc.connect('Driver={SQL Server};'
-                          'Server=DESKTOP-F46GKKA;'
-                          'Database=Baseball_data;'
-                          'Trusted_Connection=yes;')
-        cursor = conn.cursor()
+        #conn = pyodbc.connect('Driver={SQL Server};'
+                          #'Server=DESKTOP-F46GKKA;'
+                          #'Database=Baseball_data;'
+                          #'Trusted_Connection=yes;')
+        #cursor = conn.cursor()
         for x in range(200):
             loopy = loopy + 1
             data = data.findNext('td')
             data_print = data.get_text()
-            if loopy == 1: #oppoenets name
+            #if loopy == 1: #oppoenets name
                # first step is to determine if the player is already in the database.
-               Opponents_Name = data_print
-               cursor.execute("SELECT * FROM dbo.Opponents$ WHERE Opponents_NAME = ?",Opponents_Name)
-               x = cursor.fetchone()
-               if len(x) > 0 
+               #Opponents_Name = data_print
+               #cursor.execute("SELECT * FROM dbo.Opponents$ WHERE Opponents_NAME = ?",Opponents_Name)
+               #x = cursor.fetchone()
+               #if len(x) > 0 
                 
                 
             
-            if H == 'Totals':
+            if data_print == 'Totals':
                 break
             
-            print(H)
-            cursor.execute("INSERT INTO dbo.STATS$(H) VALUES (?)", (H))    
+            print(data_print)
+            #cursor.execute("INSERT INTO dbo.STATS$(H) VALUES (?)", (H))    
             #Values = [H, AVG]
             #cursor.execute(SQLCommand,Values)
-            conn.commit() 
+            #conn.commit() 
             print('committed')
             
             o = o+1

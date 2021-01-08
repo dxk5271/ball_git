@@ -18,13 +18,14 @@ def web_scrape():
         data = soup.find('td', attrs = {'class': 'Table__TD'})        
         data = data.findNext('td')
         data_print = data.get_text()
+        print("BEEEP")
         print(data_print)
         if data_print in teams: #if player hasn't faced any pitchers on the team, the loop will break.
             print("BROKE")
             i = i+1
             continue  
           
-        o = 1
+        #o = 1
         loopy = 0 
         conn = pyodbc.connect('Driver={SQL Server};'
                           'Server=DESKTOP-F46GKKA;'
@@ -35,28 +36,47 @@ def web_scrape():
             loopy = loopy + 1
             data = data.findNext('td')
             data_print = data.get_text()
+            if data_print == 'Totals':
+                break
             if loopy == 1: #oppoenets name
                # first step is to determine if the player is already in the database.
                Opponents_Name = data_print
                cursor.execute("SELECT * FROM dbo.Opponents$ WHERE Opponents_NAME = ?",Opponents_Name)
                x = cursor.fetchone()
+               print(x)
                try:
                    length = len(x)
+                   Opponents_ID = cursor.execute("SELECT MAX(Opponents_ID) from dbo.Opponents$").fetchval()
+                    
                except:
-                   pass
-                
+                   max_id = int(cursor.execute("SELECT MAX(Opponents_ID) from dbo.Opponents$").fetchval())
+                   Opponents_ID = max_id + 1
+                   
+                   cursor.execute("INSERT INTO dbo.Opponent$(Opponents_ID) VALUES (?)", (Opponents_ID))    
+                   cursor.execute("INSERT INTO dbo.Opponent$(Opponents_Name) VALUES (?)", (Opponents_Name))
+                #Now going to add opponent to database and assign id
+            cursor.execute("INSERT INTO dbo.STATS$(Opponents_ID) VALUES (?)", (Opponents_ID))    
+  
+            # Name and ID is now in the opponents db. Now time to assign STATs 
+            if loopy == 2: #AB
+                AB
+                cursor.execute("INSERT INTO dbo.STATS$(H) VALUES (?)", (H))    
+                #Values = [H, AVG]
+                #cursor.execute(SQLCommand,Values)
+                conn.commit() 
+                print('committed')
+                    
+            
+            
                 
             
-            if H == 'Totals':
-                break
             
-            print(H)
             cursor.execute("INSERT INTO dbo.STATS$(H) VALUES (?)", (H))    
             #Values = [H, AVG]
             #cursor.execute(SQLCommand,Values)
             conn.commit() 
             print('committed')
             
-            o = o+1
+            #o = o+1
         i = i +1
 web_scrape()
