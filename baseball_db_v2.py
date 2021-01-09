@@ -44,6 +44,7 @@ def web_scrape():
                cursor.execute("SELECT * FROM dbo.Opponents$ WHERE Opponents_NAME = ?",Opponents_Name)
                x = cursor.fetchone()
                print(x)
+               break
                try:
                    length = len(x)
                    Opponents_ID = cursor.execute("SELECT MAX(Opponents_ID) from dbo.Opponents$").fetchval()
